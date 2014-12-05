@@ -34,10 +34,10 @@ function configure_cdh_hadoop() {
     HDFS_PACKAGE_PREFIX=hadoop-hdfs
     MAPREDUCE_PACKAGE_PREFIX=hadoop-0.20-mapreduce
   else
-    HADOOP=hadoop-${HADOOP_VERSION:-0.20}
+    HADOOP=hadoop
     HADOOP_CONF_DIR=/etc/$HADOOP/conf.dist
-    HDFS_PACKAGE_PREFIX=hadoop-${HADOOP_VERSION:-0.20}
-    MAPREDUCE_PACKAGE_PREFIX=hadoop-${HADOOP_VERSION:-0.20}  
+    HDFS_PACKAGE_PREFIX=hadoop-hdfs
+    MAPREDUCE_PACKAGE_PREFIX=hadoop
   fi
   
   make_hadoop_dirs /data*

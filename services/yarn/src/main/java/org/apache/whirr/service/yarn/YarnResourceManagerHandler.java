@@ -94,8 +94,12 @@ public class YarnResourceManagerHandler extends YarnHandler {
     Instance resourceManager = cluster.getInstanceMatching(role(ROLE));
     LOG.info("Resource manager web UI available at http://{}:{}",
       resourceManager.getPublicHostName(), RESOURCE_MANAGER_WEB_UI_PORT);
+
+    Instance historyServer = cluster.getInstanceMatching(role("mapreduce-historyserver"));
+    LOG.info("HistoryServer available at http://{}:{}",
+      historyServer.getPrivateIp(), 10020);
     
-    Properties mrConfig = createClientSideMapReduceProperties(clusterSpec);
+    Properties mrConfig = createClientSideMapReduceProperties(clusterSpec, historyServer);
     createClientSideMapReduceSiteFile(clusterSpec, mrConfig);
 
     Properties yarnConfig = createClientSideYarnProperties(clusterSpec, resourceManager);
@@ -108,10 +112,10 @@ public class YarnResourceManagerHandler extends YarnHandler {
     event.setCluster(new Cluster(cluster.getInstances(), combined));
   }
 
-  private Properties createClientSideMapReduceProperties(ClusterSpec clusterSpec) throws IOException {
+  private Properties createClientSideMapReduceProperties(ClusterSpec clusterSpec, Instance historyServer) throws IOException {
     Properties config = new Properties();
     config.setProperty("mapreduce.framework.name", "yarn");
-    config.setProperty("mapreduce.jobhistory.address", "");
+    config.setProperty("mapreduce.jobhistory.address", historyServer.getPrivateIp() + ":" + 10020);
     return config;
   }
   

@@ -67,6 +67,9 @@ function install_cdh_hadoop() {
   local OPTIND
   local OPTARG
 
+  #hostname `curl http://169.254.169.254/latest/meta-data/public-hostname`
+  #echo `curl http://169.254.169.254/latest/meta-data/public-hostname` > /etc/hostname
+
   if [ "$INSTALL_HADOOP_DONE" == "1" ]; then
     echo "Hadoop is already installed."
     return;
@@ -75,9 +78,10 @@ function install_cdh_hadoop() {
   REPO=${REPO:-cdh4}
   REPO_HOST=${REPO_HOST:-archive.cloudera.com}
   MAPREDUCE_VERSION=${MAPREDUCE_VERSION:-1}
-  HADOOP=hadoop-${HADOOP_VERSION:-0.20}
+  HADOOP=hadoop
+  ##HADOOP=hadoop-${HADOOP_VERSION:-0.20}
   HADOOP_CONF_DIR=/etc/$HADOOP/conf.dist
-  HADOOP_PACKAGE=hadoop-${HADOOP_VERSION:-0.20}
+  HADOOP_PACKAGE=hadoop-mapreduce
   
   CDH_MAJOR_VERSION=$(echo $REPO | sed -e 's/cdh\([0-9]\).*/\1/')
   if [ $CDH_MAJOR_VERSION = "4" ]; then

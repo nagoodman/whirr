@@ -29,13 +29,13 @@ function install_oracle_jdk7() {
   arch=`uname -m`
 
   # Find out which tarball to download
-  url=http://download.oracle.com/otn-pub/java/jdk/7/jdk-7-linux-i586.tar.gz
+  url=https://s3.amazonaws.com/org.pentaho.benchmark.archives/jdk-7u55-linux-i586.gz
   if [ "x86_64" == "$arch" ]; then
-    url=http://download.oracle.com/otn-pub/java/jdk/7/jdk-7-linux-x64.tar.gz
+    url=https://s3.amazonaws.com/org.pentaho.benchmark.archives/jdk-7u55-linux-x64.gz
   fi
   
   tmpdir=`mktemp -d`
-  curl $url -L --silent --show-error --fail --connect-timeout 60 --max-time 600 --retry 5 -o $tmpdir/`basename $url`
+  curl $url -L --silent --show-error --fail --connect-timeout 60 --max-time 600 --retry 5 --retry-delay 5 -o $tmpdir/`basename $url`
 
   (cd $tmpdir; tar xzf `basename $url`)
   mkdir -p `dirname $target_dir`
